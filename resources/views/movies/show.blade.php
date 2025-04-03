@@ -27,6 +27,7 @@
                 <input type="hidden" name="rating" id="ratingValue">
             </div>
             <button type="submit" class="btn btn-success">Submit Rating</button>
+            <button type="submit" class="btn btn-primary">back</button>
         </form>
 
         <script>
