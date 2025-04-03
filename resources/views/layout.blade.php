@@ -10,7 +10,8 @@
 <body>
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
-
+        <a href="{{ route('movies.index') }}" class="navbar-brand">Home</a>
+        <a href="{{ route('movies.create') }}" class="navbar-brand">Create Movie</a>
             <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
                 <span class="navbar-toggler-icon"></span>
             </button>

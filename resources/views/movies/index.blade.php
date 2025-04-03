@@ -12,10 +12,15 @@
                         </div>
                         <div class="card-body">
                             <p class="card-text"><strong>🎭 Genre:</strong> {{ $movie->genre }}</p>
-                            <p class="card-text"><strong>📅 Released:</strong> {{ $movie->released_date }}</p>
+                            <p class="card-text"><strong>📅 Released:</strong> {{ \Carbon\Carbon::parse($movie->released_date)->format('M-d-Y') }}</p>
                         </div>
                         <div class="card-footer text-center bg-light">
-                            <a href="{{ route('movies.show', $movie->id) }}" class="btn btn-primary btn-sm">View Details</a>
+                            <a href="{{ route('movies.show', $movie->id) }}" class="btn btn-info btn-sm">View Details</a>
+                            <a href="{{ route('movies.edit', $movie->id) }}" class="btn btn-primary btn-sm">Update</a>
+                            @method('DELETE')
+                                <button type="submit" class="btn btn-danger btn-sm"><i class="fa-solid 
+                                            fa-trash"></i>
+                                    Delete</button>
                         </div>
                     </div>
                 </div>
