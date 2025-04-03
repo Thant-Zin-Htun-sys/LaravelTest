@@ -22,5 +22,5 @@ Route::get('/', function () {
 Route::prefix('movies')->group(function () {
     Route::get('/', [MovieController::class, 'index'])->name('movies.index');
     Route::get('/{id}', [MovieController::class, 'show'])->name('movies.show');
-    Route::post('/{movie_id}/rate', [RatingController::class, 'store'])->middleware('auth')->name('movies.rate');
+    Route::post('/{movie_id}/rate', [RatingController::class, 'store'])->name('movies.rate');
 });
