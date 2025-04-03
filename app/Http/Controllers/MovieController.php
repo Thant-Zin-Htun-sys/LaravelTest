@@ -28,13 +28,13 @@ class MovieController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'title' => 'required|string|max:255',
             'genre' => 'required|string|max:100',
             'released_date' => 'required|date',
         ]);
 
         Movie::create([
-            'name' => $request->name,
+            'title' => $request->title,
             'genre' => $request->genre,
             'released_date' => $request->released_date,
         ]);
@@ -49,22 +49,27 @@ class MovieController extends Controller
     }
 
     public function update(Request $request, $id)
-    {
-        $request->validate([
-            'name' => 'required|string|max:255',
-            'genre' => 'required|string|max:100',
-            'released_date' => 'required|date',
-        ]);
+{
+    // Validate the request
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'genre' => 'required|string|max:255',
+        'released_date' => 'required|date',
+    ]);
 
-        $movie = Movie::findOrFail($id);
-        $movie->update([
-            'name' => $request->name,
-            'genre' => $request->genre,
-            'released_date' => $request->released_date,
-        ]);
+    // Find the movie
+    $movie = Movie::findOrFail($id);
 
-        return redirect()->route('movies.index')->with('success', 'Movie updated successfully!');
-    }
+    // Update movie attributes
+    $movie->update([
+        'title' => $request->title,
+        'genre' => $request->genre,
+        'released_date' => $request->released_date,
+    ]);
+
+    return redirect()->route('movies.index')->with('success', 'Movie updated successfully!');
+}
+
 
     public function destroy($id)
     {

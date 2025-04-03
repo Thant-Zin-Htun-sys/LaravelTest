@@ -10,7 +10,7 @@
     @method('PUT')  <!-- This specifies the HTTP method as PUT for updating -->
     <div class="form-group">
         <label for="name">Movie Name</label>
-        <input type="text" name="name" id="name" class="form-control" value="{{ $movie->title }}" required>
+        <input type="text" name="title" id="title" class="form-control" value="{{ $movie->title }}" required>
     </div>
 
     <div class="form-group">
