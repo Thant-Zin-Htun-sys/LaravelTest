@@ -27,7 +27,7 @@
                 <input type="hidden" name="rating" id="ratingValue">
             </div>
             <button type="submit" class="btn btn-success">Submit Rating</button>
-            <button type="submit" class="btn btn-primary">back</button>
+            <a href="{{ route('movies.index') }}" class="btn btn-primary">Back</a>
         </form>
 
         <script>
