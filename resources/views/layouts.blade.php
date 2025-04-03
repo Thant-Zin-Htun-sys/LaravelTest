@@ -15,20 +15,7 @@
             </button>
             <div class="collapse navbar-collapse" id="navbarNav">
                 <ul class="navbar-nav ms-auto">
-                    @auth
-                        <li class="nav-item">
-                            <a class="nav-link" href="#">{{ Auth::user()->name }}</a>
-                        </li>
-                        <li class="nav-item">
-                            <form method="POST" action="{{ route('logout') }}">
-                                @csrf
-                                <button class="btn btn-link nav-link" type="submit">Logout</button>
-                            </form>
-                        </li>
-                    @else
-                        <li class="nav-item"><a class="nav-link" href="{{ route('login') }}">Login</a></li>
-                        <li class="nav-item"><a class="nav-link" href="{{ route('register') }}">Register</a></li>
-                    @endauth
+                    <!-- No authentication-based items -->
                 </ul>
             </div>
         </div>
