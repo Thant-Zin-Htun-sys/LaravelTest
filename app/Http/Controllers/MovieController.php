@@ -9,14 +9,20 @@ class MovieController extends Controller
 {
     public function index()
     {
-        $movies = Movie::all();
+        $movies = Movie::orderByDesc('id')->get();
+
         return view('movies.index', compact('movies'));
     }
 
-    public function show($id)
+    public function show(Movie $movie)
     {
+<<<<<<< HEAD
         $movie = Movie::findOrFail($id);
         $averageRating = $movie->rating()->avg('rating');
+=======
+        $averageRating = $movie->rating()->avg('rating');
+
+>>>>>>> 14b21e31050396d0181fc9502d0e5d538ae7623e
         return view('movies.show', compact('movie', 'averageRating'));
     }
 
@@ -45,6 +51,7 @@ class MovieController extends Controller
     public function edit($id)
     {
         $movie = Movie::findOrFail($id);
+
         return view('movies.edit', compact('movie'));
     }
 
