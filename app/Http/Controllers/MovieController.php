@@ -16,7 +16,7 @@ class MovieController extends Controller
     public function show($id)
     {
         $movie = Movie::findOrFail($id);
-        $averageRating = $movie->ratings()->avg('rating');
+        $averageRating = $movie->rating()->avg('rating');
         return view('movies.show', compact('movie', 'averageRating'));
     }
 
