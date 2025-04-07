@@ -20,14 +20,14 @@ Route::get('/', function () {
 });
 
 Route::prefix('movies')->group(function () {
-    Route::controller(MovieController::class)->group(function() {
+    Route::controller(MovieController::class)->group(function () {
         Route::get('/', 'index')->name('movies.index');
         Route::get('/create', 'create')->name('movies.create');
         Route::post('/', 'store')->name('movies.store');
         Route::get('/{movie}', 'show')->name('movies.show');
-        Route::get('/{id}/edit', 'edit')->name('movies.edit');
-        Route::put('/{id}', 'update')->name('movies.update');
-        Route::delete('/{id}', 'destroy')->name('movies.destroy');
+        Route::get('/{movie}/edit', 'edit')->name('movies.edit');
+        Route::put('/{movie}', 'update')->name('movies.update');
+        Route::delete('/{movie}', 'destroy')->name('movies.destroy');
     });
 
     Route::post('/{movie_id}/rate', [RatingController::class, 'store'])->name('movies.rate');

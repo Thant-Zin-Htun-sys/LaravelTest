@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Genre;
 use App\Models\Movie;
 use Illuminate\Http\Request;
 
@@ -9,14 +10,14 @@ class MovieController extends Controller
 {
     public function index()
     {
-        $movies = Movie::orderByDesc('id')->get();
+        $movies = Movie::with('genre')->orderByDesc('id')->get();
 
         return view('movies.index', compact('movies'));
     }
 
     public function show(Movie $movie)
     {
-       
+
         $averageRating = $movie->rating()->avg('rating');
 
         return view('movies.show', compact('movie', 'averageRating'));
@@ -24,20 +25,22 @@ class MovieController extends Controller
 
     public function create()
     {
-        return view('movies.create');
+        $genres = Genre::all();
+
+        return view('movies.create', compact('genres'));
     }
 
     public function store(Request $request)
     {
         $request->validate([
             'title' => 'required|string|max:255',
-            'genre' => 'required|string|max:100',
+            'genre_id' => 'required|exists:genres,id',
             'released_date' => 'required|date',
         ]);
 
         Movie::create([
             'title' => $request->title,
-            'genre' => $request->genre,
+            'genre_id' => $request->genre_id,
             'released_date' => $request->released_date,
         ]);
 
@@ -47,8 +50,9 @@ class MovieController extends Controller
     public function edit($id)
     {
         $movie = Movie::findOrFail($id);
+        $genres = Genre::all();
 
-        return view('movies.edit', compact('movie'));
+        return view('movies.edit', compact('movie', 'genres'));
     }
 
     public function update(Request $request, $id)
@@ -56,7 +60,7 @@ class MovieController extends Controller
     // Validate the request
     $request->validate([
         'title' => 'required|string|max:255',
-        'genre' => 'required|string|max:255',
+        'genre_id' => 'required|exists:genres,id',
         'released_date' => 'required|date',
     ]);
 
@@ -66,7 +70,7 @@ class MovieController extends Controller
     // Update movie attributes
     $movie->update([
         'title' => $request->title,
-        'genre' => $request->genre,
+        'genre_id' => $request->genre_id,
         'released_date' => $request->released_date,
     ]);
 

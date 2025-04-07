@@ -11,7 +11,7 @@
                             <h5 class="card-title m-0">{{ $movie->title }}</h5>
                         </div>
                         <div class="card-body">
-                            <p class="card-text"><strong>🎭 Genre:</strong> {{ $movie->genre }}</p>
+                            <p class="card-text"><strong>🎭 Genre:</strong> {{ $movie->genre->name }}</p>
                             <p class="card-text"><strong>📅 Released:</strong>
                                 {{ \Carbon\Carbon::parse($movie->released_date)->format('M-d-Y') }}</p>
                         </div>
