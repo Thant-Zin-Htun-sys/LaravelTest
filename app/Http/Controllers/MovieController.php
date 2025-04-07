@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Genre;
 use App\Models\Movie;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class MovieController extends Controller
 {
@@ -16,12 +17,16 @@ class MovieController extends Controller
     }
 
     public function show(Movie $movie)
-    {
+{
+    $averageRating = $movie->rating()->avg('rating');
 
-        $averageRating = $movie->rating()->avg('rating');
+    // Personalized Recommendations based on Genre
+    $recommended = Movie::where('genre_id', $movie->genre_id)
+                        ->where('id', '!=', $movie->id)
+                        ->take(5)->get();
 
-        return view('movies.show', compact('movie', 'averageRating'));
-    }
+    return view('movies.show', compact('movie', 'averageRating', 'recommended'));
+}
 
     public function create()
     {
@@ -85,5 +90,7 @@ class MovieController extends Controller
 
         return redirect()->route('movies.index')->with('success', 'Movie deleted successfully!');
     }
+
+
 }
 

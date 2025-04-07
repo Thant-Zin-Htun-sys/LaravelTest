@@ -8,20 +8,30 @@
     <link rel="stylesheet" href="path/to/font-awesome/css/font-awesome.min.css">
 </head>
 <body>
-    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
-        <div class="container">
-        <a href="{{ route('movies.index') }}" class="navbar-brand">Home</a>
-        <a href="{{ route('movies.create') }}" class="navbar-brand">Create Movie</a>
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNav">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-            <div class="collapse navbar-collapse" id="navbarNav">
-                <ul class="navbar-nav ms-auto">
-                    <!-- No authentication-based items -->
-                </ul>
-            </div>
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+    <div class="container">
+        <a class="navbar-brand" href="{{ route('movies.index') }}">🎬 Movie App</a>
+
+        <div class="ml-auto">
+            @auth
+            <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary btn-sm me-2">Recommendations</a>
+                <span class="me-2">Welcome, {{ Auth::user()->name }}</span>
+                <form action="{{ route('logout') }}" method="POST" style="display:inline;">
+                    @csrf
+                    <button type="submit" class="btn btn-outline-danger btn-sm">Logout</button>
+                </form>
+                <!-- Add the 'Create Movie' button here -->
+                <a href="{{ route('movies.create') }}" class="btn btn-outline-success btn-sm">Create Movie</a>
+            @else
+                <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm">Login</a>
+                <a href="{{ route('register') }}" class="btn btn-outline-success btn-sm">Register</a>
+            @endauth
         </div>
-    </nav>
+    </div>
+</nav>
+
+
+
 
     <div class="container mt-4">
         @yield('content')

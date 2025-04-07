@@ -5,11 +5,24 @@
         <div class="card shadow-lg border-0">
             <div class="card-body text-center">
                 <h2 class="text-primary font-weight-bold">🎬 {{ $movie->title }}</h2>
-                <p><strong>🎭 Genre:</strong> {{ $movie->genre->name }}</p>
-                <p><strong>📅 Released Date:</strong> {{ \Carbon\Carbon::parse($movie->released_date)->format('F d, Y') }}</p>
+                <p><strong>🎭 Genre:</strong> {{ $movie->genre->name }}</p> <!-- Fix: Use the genre relationship -->
+                <p><strong>📅 Released Date:</strong> {{ \Carbon\Carbon::parse($movie->released_date)->format('F d, Y') }}
+                </p>
                 <p><strong>⭐️ Rating:</strong> {{ number_format($averageRating, 1) ?? 'No ratings yet' }}</p>
             </div>
         </div>
+
+        <!-- Recommended Movies -->
+        @if ($recommended->count())
+            <div class="mt-4">
+                <h5>You might also like:</h5>
+                <ul>
+                    @foreach ($recommended as $rec)
+                        <li><a href="{{ route('movies.show', $rec->id) }}">{{ $rec->title }}</a></li>
+                    @endforeach
+                </ul>
+            </div>
+        @endif
 
         <!-- Rating form with star rating -->
         <h4 class="mt-4 text-center">Rate this Movie</h4>
@@ -30,13 +43,14 @@
             <a href="{{ route('movies.index') }}" class="btn btn-primary">Back</a>
         </form>
 
+
         <script>
-            document.addEventListener("DOMContentLoaded", function () {
+            document.addEventListener("DOMContentLoaded", function() {
                 const stars = document.querySelectorAll(".star-rating i");
                 const ratingInput = document.getElementById("ratingValue");
 
                 stars.forEach(star => {
-                    star.addEventListener("click", function () {
+                    star.addEventListener("click", function() {
                         let rating = this.getAttribute("data-value");
                         ratingInput.value = rating; // Store selected rating
 
@@ -70,19 +84,5 @@
                 color: #ff9c1a;
             }
         </style>
-
-
-    {{-- <script>
-        const stars = document.querySelectorAll('.star-rating i');
-        stars.forEach((star, index1) => {
-            star.addEventListener("click", () => {
-                console.log("clicked");
-
-                stars.forEach((star, index2) => {
-                    index2 >= index1 ? star.classList.add("active") : star.classList.remove(
-                        "active");
-                });
-            });
-        });
-    </script> --}}
+    </div>
 @endsection

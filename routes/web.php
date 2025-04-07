@@ -1,7 +1,9 @@
 <?php
 
+use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\RatingController;
+use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,16 +21,34 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('movies')->group(function () {
-    Route::controller(MovieController::class)->group(function () {
-        Route::get('/', 'index')->name('movies.index');
-        Route::get('/create', 'create')->name('movies.create');
-        Route::post('/', 'store')->name('movies.store');
-        Route::get('/{movie}', 'show')->name('movies.show');
-        Route::get('/{movie}/edit', 'edit')->name('movies.edit');
-        Route::put('/{movie}', 'update')->name('movies.update');
-        Route::delete('/{movie}', 'destroy')->name('movies.destroy');
-    });
+// ✅ Correct dashboard route
+Route::get('/dashboard', [UserController::class, 'dashboard'])->middleware(['auth'])->name('dashboard');
 
-    Route::post('/{movie_id}/rate', [RatingController::class, 'store'])->name('movies.rate');
+// Profile routes
+Route::middleware('auth')->group(function () {
+    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
+    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
+    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
 });
+
+// Movie routes
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('movies')->group(function () {
+        Route::controller(MovieController::class)->group(function () {
+            Route::get('/', 'index')->name('movies.index');
+            Route::get('/create', 'create')->name('movies.create');
+            Route::post('/', 'store')->name('movies.store');
+            Route::get('/{movie}', 'show')->name('movies.show');
+            Route::get('/{movie}/edit', 'edit')->name('movies.edit');
+            Route::put('/{movie}', 'update')->name('movies.update');
+            Route::delete('/{movie}', 'destroy')->name('movies.destroy');
+        });
+
+        Route::middleware('auth')->group(function () {
+            Route::post('/{movie}/rate', [RatingController::class, 'store'])->name('movies.rate');
+        });
+
+    });
+});
+
+require __DIR__ . '/auth.php';
