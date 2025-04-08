@@ -20,10 +20,6 @@
 
                     <a href="{{ route('movies.create') }}" class="btn btn-outline-success btn-sm">Create Movie</a>
 
-
-                    <a href="{{ route('genres.create') }}" class="btn btn-outline-success btn-sm">Create Genre</a>
-
-
                     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                         @csrf
                         <button type="submit" class="btn btn-outline-danger btn-sm me-2">Logout</button>
@@ -31,10 +27,10 @@
 
 
 
-                    <!-- Profile Icon -->
+                    {{-- <!-- Profile Icon -->
                     <a href="{{ route('profile.edit') }}" class="btn btn-outline-info btn-sm me-2">
                         <i class="fa fa-user"></i>
-                    </a>
+                    </a> --}}
                 @else
                     <a href="{{ route('login') }}" class="btn btn-outline-primary btn-sm me-2">Login</a>
                     <a href="{{ route('register') }}" class="btn btn-outline-success btn-sm">Register</a>
