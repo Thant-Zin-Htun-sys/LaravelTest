@@ -18,7 +18,7 @@ class MovieController extends Controller
 
     public function show(Movie $movie)
 {
-    $averageRating = $movie->rating()->avg('rating');
+    $averageRating = $movie->ratings()->avg('rating');
 
     // Personalized Recommendations based on Genre
     $recommended = Movie::where('genre_id', $movie->genre_id)

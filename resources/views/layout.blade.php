@@ -18,11 +18,10 @@
                     <span class="me-2">Welcome, {{ Auth::user()->name }}</span>
 
 
-                    <a href="{{ route('dashboard') }}" class="btn btn-outline-secondary btn-sm me-2">Recommendations</a>
-
-
                     <a href="{{ route('movies.create') }}" class="btn btn-outline-success btn-sm">Create Movie</a>
 
+
+                    <a href="{{ route('genres.create') }}" class="btn btn-outline-success btn-sm">Create Genre</a>
 
 
                     <form action="{{ route('logout') }}" method="POST" style="display:inline;">

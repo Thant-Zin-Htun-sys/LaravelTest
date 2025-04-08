@@ -16,15 +16,8 @@
                                 {{ \Carbon\Carbon::parse($movie->released_date)->format('M-d-Y') }}</p>
                         </div>
                         <div class="card-footer text-center bg-light">
-                            <a href="{{ route('movies.show', ['movie' => $movie->id]) }}" class="btn btn-info btn-sm">View Details</a>
-                            <a href="{{ route('movies.edit', $movie->id) }}" class="btn btn-primary btn-sm">Update</a>
-                            <form action="{{ route('movies.destroy', $movie->id) }}" method="POST"
-                                style="display:inline-block;">
-                                @csrf
-                                @method('DELETE') <!-- This specifies the HTTP method as DELETE for deletion -->
-                                <button type="submit" class="btn btn-danger"
-                                    onclick="return confirm('Are you sure you want to delete this movie?')">Delete</button>
-                            </form>
+                            <a href="{{ route('users.show', ['movie' => $movie->id]) }}" class="btn btn-info btn-sm">View Details</a>
+
                         </div>
                     </div>
                 </div>

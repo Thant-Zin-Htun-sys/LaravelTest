@@ -24,6 +24,9 @@ Route::get('/', function () {
 // Dashboard route
 Route::get('/dashboard', [UserController::class, 'dashboard'])->middleware(['auth'])->name('dashboard');
 
+Route::get('/home', [UserController::class, 'home'])->middleware(['auth'])->name('users.home');
+Route::get('/movie/{movie}', [UserController::class, 'show'])->name('users.show');
+
 // Profile routes
 Route::middleware('auth')->group(function () {
     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');

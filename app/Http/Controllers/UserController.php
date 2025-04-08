@@ -10,6 +10,23 @@ use Illuminate\Support\Facades\Auth;
 
 class UserController extends Controller
 {
+    public function home() {
+        $movies = Movie::with('genre')->orderByDesc('id')->get();
+
+        return view('users.home', compact('movies'));
+    }
+
+    public function show(Movie $movie) {
+        $averageRating = $movie->ratings()->avg('rating');
+
+    // Personalized Recommendations based on Genre
+    $recommended = Movie::where('genre_id', $movie->genre_id)
+                        ->where('id', '!=', $movie->id)
+                        ->take(5)->get();
+
+    return view('users.show', compact('movie', 'averageRating', 'recommended'));
+    }
+
     public function dashboard()
     {
         $user = Auth::user();
