@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use Illuminate\View\View;
+use App\Models\Rating;
 
 class ProfileController extends Controller
 {
@@ -15,11 +16,35 @@ class ProfileController extends Controller
      * Display the user's profile form.
      */
     public function edit(Request $request): View
-    {
-        return view('profile.edit', [
-            'user' => $request->user(),
-        ]);
-    }
+{
+    // Get the logged-in user
+    $user = $request->user();
+
+    // Get rated movies with their genres
+    $ratedMovies = $user->ratings()->with('movie.genre')->get();
+
+    // Return the edit view along with the user and ratedMovies
+    return view('profile.edit', [
+        'user' => $user,
+        'ratedMovies' => $ratedMovies,
+    ]);
+}
+
+
+//     public function show(Request $request)
+// {
+//     // Get the logged-in user
+//     $user = $request->user();
+
+//     // Get rated movies with their genres
+//     $ratedMovies = $user->ratings()->with('movie.genre')->get();
+
+//     // Pass the ratedMovies variable to the view
+//     return view('profile.show', compact('ratedMovies'));
+// }
+
+
+
 
     /**
      * Update the user's profile information.

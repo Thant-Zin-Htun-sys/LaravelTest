@@ -13,7 +13,7 @@ class Movie extends Model
         'title', 'genre_id', 'released_date'
     ];
 
-    public function rating(){
+    public function ratings(){
         return $this->hasMany(Rating::class,'movie_id');
     }
 
