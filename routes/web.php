@@ -46,7 +46,10 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{movie}/edit', 'edit')->name('movies.edit');
             Route::put('/{movie}', 'update')->name('movies.update');
             Route::delete('/{movie}', 'destroy')->name('movies.destroy');
-            Route::post('/{movie}/rate', 'rate')->name('movies.rate');
+        });
+
+        Route::middleware('auth')->group(function () {
+            Route::post('/{movie}/rate', [RatingController::class, 'store'])->name('movies.rate');
         });
 
     });

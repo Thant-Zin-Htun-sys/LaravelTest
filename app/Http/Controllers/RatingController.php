@@ -40,6 +40,6 @@ class RatingController extends Controller
         );
 
         // Redirect back with a success message
-        return redirect()->route('movies.show', $movie->id)->with('success', 'Rating saved!');
+        return redirect()->route('users.show', $movie->id)->with('success', 'Rating saved!');
     }
 }
