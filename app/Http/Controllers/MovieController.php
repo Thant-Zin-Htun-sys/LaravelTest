@@ -38,23 +38,36 @@ class MovieController extends Controller
     }
 
     public function store(Request $request)
-    {
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'genre_id' => 'required|exists:genres,id',
-            'released_date' => 'required|date',
-        ]);
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'genre_id' => 'required|exists:genres,id',
+        'actors' => 'required|string',
+        'released_date' => 'required|date',
+    ]);
 
-        $movie = Movie::create([
-            'title' => $request->title,
-            'genre_id' => $request->genre_id,
-            'released_date' => $request->released_date,
-        ]);
+    $movie = Movie::create([
+        'title' => $request->title,
+        'genre_id' => $request->genre_id,
+        'released_date' => $request->released_date,
+    ]);
 
-        $movie->actors()->attach($request->actors);
+    // Convert comma-separated names to array
+    $actorNames = array_map('trim', explode(',', $request->actors));
 
-        return redirect()->route('movies.index')->with('success', 'Movie added successfully!');
+    // Get or create actor IDs
+    $actorIds = [];
+    foreach ($actorNames as $name) {
+        $actor = \App\Models\Actor::firstOrCreate(['name' => $name]);
+        $actorIds[] = $actor->id;
     }
+
+    // Attach actor IDs to movie
+    $movie->actors()->attach($actorIds);
+
+    return redirect()->route('movies.index')->with('success', 'Movie added successfully!');
+}
+
 
     public function edit($id)
     {
@@ -65,29 +78,35 @@ class MovieController extends Controller
         return view('movies.edit', compact('movie', 'genres', 'actors'));
     }
 
-    public function update(Request $request, $id)
-    {
-        // Validate the request
-        $request->validate([
-            'title' => 'required|string|max:255',
-            'genre_id' => 'required|exists:genres,id',
-            'released_date' => 'required|date',
-        ]);
+    public function update(Request $request, Movie $movie)
+{
+    $request->validate([
+        'title' => 'required|string|max:255',
+        'genre_id' => 'required|exists:genres,id',
+        'actors' => 'required|string',
+        'released_date' => 'required|date',
+    ]);
 
-        // Find the movie
-        $movie = Movie::findOrFail($id);
+    $movie->update([
+        'title' => $request->title,
+        'genre_id' => $request->genre_id,
+        'released_date' => $request->released_date,
+    ]);
 
-        // Update movie attributes
-        $movie->update([
-            'title' => $request->title,
-            'genre_id' => $request->genre_id,
-            'released_date' => $request->released_date,
-        ]);
+    // Parse comma-separated names
+    $actorNames = array_map('trim', explode(',', $request->actors));
 
-        $movie->actors()->sync($request->actors);
-
-        return redirect()->route('movies.index')->with('success', 'Movie updated successfully!');
+    $actorIds = [];
+    foreach ($actorNames as $name) {
+        $actor = \App\Models\Actor::firstOrCreate(['name' => $name]);
+        $actorIds[] = $actor->id;
     }
+
+    $movie->actors()->sync($actorIds);
+
+    return redirect()->route('movies.index')->with('success', 'Movie updated successfully!');
+}
+
 
 
     public function destroy($id)
