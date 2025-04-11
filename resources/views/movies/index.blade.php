@@ -11,7 +11,7 @@
                             <h5 class="card-title m-0">{{ $movie->title }}</h5>
                         </div>
                         <div class="card-body">
-                            <p class="card-text"><strong>🎭 Actor:</strong>
+                            <p class="card-text"><strong>👤 Actor:</strong>
                                 @foreach ($movie->actors as $actor)
                                     {{ $actor->name }}@if (!$loop->last)
                                         ,
