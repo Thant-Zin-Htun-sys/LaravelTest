@@ -118,22 +118,6 @@ class MovieController extends Controller
         return redirect()->route('movies.index')->with('success', 'Movie deleted successfully!');
     }
 
-    public function search(Request $request)
-    {
-        $search = $request->input('query');
 
-        $movies = Movie::with('genre', 'actors')
-            ->where('title', 'like', "%search%")
-            ->orWhereHas('genre', function ($q) use ($search) {
-                $q->where('name', 'like', "%search%");
-            })
-            ->orWhereHas('actors', function ($q) use ($search) {
-                $q->where('name', 'like', "%search%");
-            })
-            ->orderByDec('id')
-            ->get();
-
-            return view('movies.index', compact('movies'));
-    }
 
 }

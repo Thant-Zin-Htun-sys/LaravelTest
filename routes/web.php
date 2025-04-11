@@ -26,6 +26,7 @@ Route::get('/dashboard', [UserController::class, 'dashboard'])->middleware(['aut
 
 Route::get('/home', [UserController::class, 'home'])->middleware(['auth'])->name('users.home');
 Route::get('/movie/{movie}', [UserController::class, 'show'])->name('users.show');
+Route::get('/users/search', [UserController::class, 'search'])->name('users.search');
 
 // Profile routes
 Route::middleware('auth')->group(function () {
@@ -46,7 +47,6 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{movie}/edit', 'edit')->name('movies.edit');
             Route::put('/{movie}', 'update')->name('movies.update');
             Route::delete('/{movie}', 'destroy')->name('movies.destroy');
-            Route::get('/search', 'search')->name('movies.search');
         });
 
         Route::middleware('auth')->group(function () {

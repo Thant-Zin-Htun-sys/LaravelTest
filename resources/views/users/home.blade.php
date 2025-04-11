@@ -4,10 +4,10 @@
     <div class="container mt-5">
         <h1 class="text-center mb-4 text-primary font-weight-bold">🎬 Movies Collection</h1>
         <div class="row">
-            <form action="{{ route('movies.search') }}" method="GET" class="mb-4">
-                <input type="text" name="query" placeholder="Search by title, genre, or actor..."
-                    value="{{ request('query') }}">
-                <button type="submit">Search</button>
+            <form action="{{ route('users.search') }}" method="GET" class="mb-4">
+                <input type="text" name="search" placeholder="Search by title, genre, or actor..."
+                    value="{{ request()->input('search') ? request()->input('search') : '' }}">
+                <button class="btn btn-success btn-sm" type="submit">Search</button>
             </form>
 
             @foreach ($movies as $movie)
