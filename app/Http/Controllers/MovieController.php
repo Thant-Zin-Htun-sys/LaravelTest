@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Actor;
 use App\Models\Genre;
 use App\Models\Movie;
 use Illuminate\Http\Request;
@@ -31,8 +32,9 @@ class MovieController extends Controller
     public function create()
     {
         $genres = Genre::all();
+        $actors = Actor::all();
 
-        return view('movies.create', compact('genres'));
+        return view('movies.create', compact('genres', 'actors'));
     }
 
     public function store(Request $request)
@@ -43,11 +45,13 @@ class MovieController extends Controller
             'released_date' => 'required|date',
         ]);
 
-        Movie::create([
+        $movie = Movie::create([
             'title' => $request->title,
             'genre_id' => $request->genre_id,
             'released_date' => $request->released_date,
         ]);
+
+        $movie->actors()->attach($request->actors);
 
         return redirect()->route('movies.index')->with('success', 'Movie added successfully!');
     }
@@ -56,8 +60,9 @@ class MovieController extends Controller
     {
         $movie = Movie::findOrFail($id);
         $genres = Genre::all();
+        $actors = Actor::all();
 
-        return view('movies.edit', compact('movie', 'genres'));
+        return view('movies.edit', compact('movie', 'genres', 'actors'));
     }
 
     public function update(Request $request, $id)
@@ -79,6 +84,8 @@ class MovieController extends Controller
             'released_date' => $request->released_date,
         ]);
 
+        $movie->actors()->sync($request->actors);
+
         return redirect()->route('movies.index')->with('success', 'Movie updated successfully!');
     }
 
@@ -90,6 +97,24 @@ class MovieController extends Controller
         $movie->delete();
 
         return redirect()->route('movies.index')->with('success', 'Movie deleted successfully!');
+    }
+
+    public function search(Request $request)
+    {
+        $search = $request->input('query');
+
+        $movies = Movie::with('genre', 'actors')
+            ->where('title', 'like', "%search%")
+            ->orWhereHas('genre', function ($q) use ($search) {
+                $q->where('name', 'like', "%search%");
+            })
+            ->orWhereHas('actors', function ($q) use ($search) {
+                $q->where('name', 'like', "%search%");
+            })
+            ->orderByDec('id')
+            ->get();
+
+            return view('movies.index', compact('movies'));
     }
 
 }

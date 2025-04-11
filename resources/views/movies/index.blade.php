@@ -11,12 +11,20 @@
                             <h5 class="card-title m-0">{{ $movie->title }}</h5>
                         </div>
                         <div class="card-body">
+                            <p class="card-text"><strong>🎭 Actor:</strong>
+                                @foreach ($movie->actors as $actor)
+                                    {{ $actor->name }}@if (!$loop->last)
+                                        ,
+                                    @endif
+                                @endforeach
+                            </p>
                             <p class="card-text"><strong>🎭 Genre:</strong> {{ $movie->genre->name }}</p>
                             <p class="card-text"><strong>📅 Released:</strong>
                                 {{ \Carbon\Carbon::parse($movie->released_date)->format('M-d-Y') }}</p>
                         </div>
                         <div class="card-footer text-center bg-light">
-                            <a href="{{ route('movies.show', ['movie' => $movie->id]) }}" class="btn btn-info btn-sm">View Details</a>
+                            <a href="{{ route('movies.show', ['movie' => $movie->id]) }}" class="btn btn-info btn-sm">View
+                                Details</a>
                             <a href="{{ route('movies.edit', $movie->id) }}" class="btn btn-primary btn-sm">Update</a>
                             <form action="{{ route('movies.destroy', $movie->id) }}" method="POST"
                                 style="display:inline-block;">

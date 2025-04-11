@@ -46,6 +46,7 @@ Route::middleware(['auth'])->group(function () {
             Route::get('/{movie}/edit', 'edit')->name('movies.edit');
             Route::put('/{movie}', 'update')->name('movies.update');
             Route::delete('/{movie}', 'destroy')->name('movies.destroy');
+            Route::get('/search', 'search')->name('movies.search');
         });
 
         Route::middleware('auth')->group(function () {
