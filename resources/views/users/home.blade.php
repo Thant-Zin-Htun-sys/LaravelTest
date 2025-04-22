@@ -11,7 +11,7 @@
                 <input type="text" name="search" class="form-control form-control-lg"
                     placeholder="Search by title, genre, or actor..."
                     value="{{ request('search') }}">
-                <button class="btn btn-danger btn-lg" type="submit">
+                <button class="btn btn-primary btn-lg" type="submit">
                     <i class="fa fa-search"></i>&nbsp; Search
                 </button>
             </form>
