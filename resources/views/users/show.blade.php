@@ -5,7 +5,7 @@
         <div class="card shadow-lg border-0">
             <div class="card-body text-center">
                 <h2 class="text-primary font-weight-bold">🎬 {{ $movie->title }}</h2>
-                <p class="card-text"><strong>🎭 Actor:</strong>
+                <p class="card-text"><strong>👤 Actor:</strong>
                     @foreach ($movie->actors as $actor)
                         {{ $actor->name }}@if (!$loop->last)
                             ,
