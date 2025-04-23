@@ -42,7 +42,7 @@ class MovieController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'genre_id' => 'required|exists:genres,id',
-            'actors' => 'required|array|size:2',
+            'actors' => 'required|array|min:1',
             'actors.*' => 'exists:actors,id',
             'released_date' => 'required|date',
         ]);
@@ -53,21 +53,12 @@ class MovieController extends Controller
             'released_date' => $request->released_date,
         ]);
 
-        // Convert comma-separated names to array
-        $actorNames = array_map('trim', explode(',', $request->actors));
-
-        // Get or create actor IDs
-        $actorIds = [];
-        foreach ($actorNames as $name) {
-            $actor = \App\Models\Actor::firstOrCreate(['name' => $name]);
-            $actorIds[] = $actor->id;
-        }
-
-        // Attach actor IDs to movie
-        $movie->actors()->attach($actorIds);
+        // Attach actor IDs directly
+        $movie->actors()->attach($request->actors);
 
         return redirect()->route('movies.index')->with('success', 'Movie added successfully!');
     }
+
 
 
     public function edit($id)
@@ -84,30 +75,24 @@ class MovieController extends Controller
         $request->validate([
             'title' => 'required|string|max:255',
             'genre_id' => 'required|exists:genres,id',
-            'actors' => 'required|array|size:2',
+            'actors' => 'required|array|size:2', // exactly 2 actors
             'actors.*' => 'exists:actors,id',
             'released_date' => 'required|date',
         ]);
 
+        // Update movie info
         $movie->update([
             'title' => $request->title,
             'genre_id' => $request->genre_id,
             'released_date' => $request->released_date,
         ]);
 
-        // Parse comma-separated names
-        $actorNames = array_map('trim', explode(',', $request->actors));
-
-        $actorIds = [];
-        foreach ($actorNames as $name) {
-            $actor = \App\Models\Actor::firstOrCreate(['name' => $name]);
-            $actorIds[] = $actor->id;
-        }
-
-        $movie->actors()->sync($actorIds);
+        // Sync actors (no need for explode or name lookup)
+        $movie->actors()->sync($request->actors);
 
         return redirect()->route('movies.index')->with('success', 'Movie updated successfully!');
     }
+
 
 
 
@@ -119,7 +104,4 @@ class MovieController extends Controller
 
         return redirect()->route('movies.index')->with('success', 'Movie deleted successfully!');
     }
-
-
-
 }
