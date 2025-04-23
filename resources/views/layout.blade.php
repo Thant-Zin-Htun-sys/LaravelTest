@@ -18,11 +18,11 @@
                     <span class="me-2">Welcome, {{ Auth::user()->name }}</span>
 
 
-                    <a href="{{ route('movies.create') }}" class="btn btn-outline-success btn-sm">Create Movie</a>
+                    <a href="{{ route('movies.create') }}" class="btn btn-outline-success btn-sm me-2">Create Movie</a>
 
-                    <a href="{{ route('genres.index') }}" class="btn btn-outline-success btn-sm">Genre</a>
+                    <a href="{{ route('genres.index') }}" class="btn btn-outline-success btn-sm me-2">Genre</a>
 
-                    <a href="{{ route('actors.index') }}" class="btn btn-outline-success btn-sm">Actor</a>
+                    <a href="{{ route('actors.index') }}" class="btn btn-outline-success btn-sm me-2">Actor</a>
 
                     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                         @csrf
