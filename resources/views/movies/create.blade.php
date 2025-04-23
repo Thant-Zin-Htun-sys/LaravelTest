@@ -38,15 +38,16 @@
 
                 {{-- Actors --}}
                 <div class="mb-3">
-                    <label for="inputActors" class="form-label"><strong>Actors:</strong></label>
-                    <select name="actors[]" class="form-control @error('actors') is-invalid @enderror" id="inputActors" multiple required>
+                    <label for="inputActors" class="form-label"><strong>Actors (Select 2):</strong></label>
+                    <select name="actors[]" class="form-control @error('actors') is-invalid @enderror" id="inputActors"
+                        multiple required>
                         @foreach($actors as $actor)
                             <option value="{{ $actor->id }}" {{ collect(old('actors'))->contains($actor->id) ? 'selected' : '' }}>
                                 {{ $actor->name }}
                             </option>
                         @endforeach
                     </select>
-                    <small class="form-text text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple actors.</small>
+                    <small class="form-text text-muted">Select exactly 2 actors (Hold Ctrl/Command to select).</small>
                     @error('actors')
                         <div class="form-text text-danger">{{ $message }}</div>
                     @enderror
@@ -69,4 +70,19 @@
 
         </div>
     </div>
+@endsection
+
+@section('scripts')
+<script>
+    document.addEventListener('DOMContentLoaded', function () {
+        const actorSelect = document.getElementById('inputActors');
+        actorSelect.addEventListener('change', function () {
+            let selectedOptions = Array.from(this.selectedOptions);
+            if (selectedOptions.length > 2) {
+                alert('Please select only two actors.');
+                selectedOptions.forEach(option => option.selected = false);
+            }
+        });
+    });
+</script>
 @endsection

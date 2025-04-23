@@ -1,13 +1,13 @@
 @extends('layout')
+
 @section('content')
     <div class="card mt-5">
         <h2 class="card-header">Edit Movie</h2>
 
         <div class="card-body">
-
             <form action="{{ route('movies.update', $movie->id) }}" method="POST">
                 @csrf
-                @method('PUT') <!-- This specifies the HTTP method as PUT for updating -->
+                @method('PUT')
 
                 <!-- Movie Title -->
                 <div class="form-group mb-3">
@@ -19,11 +19,10 @@
                     @enderror
                 </div>
 
-                <!-- Genre Dropdown -->
+                <!-- Genre -->
                 <div class="form-group mb-3">
                     <label for="genre_id"><strong>Genre:</strong></label>
-                    <select name="genre_id" id="genre_id" class="form-control @error('genre_id') is-invalid @enderror"
-                        required>
+                    <select name="genre_id" id="genre_id" class="form-control @error('genre_id') is-invalid @enderror" required>
                         <option value="">-- Select Genre --</option>
                         @foreach($genres as $genre)
                             <option value="{{ $genre->id }}" {{ (old('genre_id', $movie->genre_id) == $genre->id) ? 'selected' : '' }}>
@@ -36,20 +35,22 @@
                     @enderror
                 </div>
 
-                <!-- Actors -->
+                <!-- Actors using Select2 -->
                 <div class="mb-3">
-                    <label for="inputActors" class="form-label"><strong>Actors:</strong></label>
-                    <input type="text" name="actors" id="inputActors"
-                        class="form-control @error('actors') is-invalid @enderror"
-                        placeholder="Enter actor names separated by commas"
-                        value="{{ old('actors', $movie->actors->pluck('name')->implode(', ')) }}">
-                    <small class="form-text text-muted">Separate names by commas (e.g. Tom Hanks, Scarlett
-                        Johansson).</small>
+                    <label for="inputActors" class="form-label"><strong>Actors (Select 2):</strong></label>
+                    <select name="actors[]" id="inputActors" class="form-select select2 @error('actors') is-invalid @enderror" multiple required>
+                        @foreach($actors as $actor)
+                            <option value="{{ $actor->id }}" 
+                                {{ in_array($actor->id, old('actors', $movie->actors->pluck('id')->toArray())) ? 'selected' : '' }}>
+                                {{ $actor->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <small class="form-text text-muted">You must select exactly 2 actors.</small>
                     @error('actors')
                         <div class="form-text text-danger">{{ $message }}</div>
                     @enderror
                 </div>
-
 
                 <!-- Released Date -->
                 <div class="form-group mb-3">
@@ -62,12 +63,36 @@
                     @enderror
                 </div>
 
-                <button type="submit" class="btn btn-primary mt-3"><i class="fa-solid fa-floppydisk"></i> Update
-                    Movie</button>
-                <a href="{{ route('movies.index') }}" class="btn btn-secondary mt-3"><i class="fa fa-arrow-left"></i>
-                    Back</a>
+                <button type="submit" class="btn btn-primary mt-3"><i class="fa-solid fa-floppydisk"></i> Update Movie</button>
+                <a href="{{ route('movies.index') }}" class="btn btn-secondary mt-3"><i class="fa fa-arrow-left"></i> Back</a>
             </form>
-
         </div>
     </div>
+@endsection
+
+@section('scripts')
+    <!-- Include Select2 CSS & JS -->
+    <link href="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/css/select2.min.css" rel="stylesheet" />
+    <script src="https://cdn.jsdelivr.net/npm/select2@4.1.0-rc.0/dist/js/select2.min.js"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function () {
+            // Initialize Select2
+            $('#inputActors').select2({
+                placeholder: 'Select 2 actors',
+                width: '100%'
+            });
+
+            // Limit selection to exactly 2
+            $('#inputActors').on('change', function () {
+                const selected = $(this).val();
+                if (selected.length > 2) {
+                    alert('You can only select 2 actors.');
+                    // Remove the last selected option
+                    selected.pop();
+                    $(this).val(selected).trigger('change');
+                }
+            });
+        });
+    </script>
 @endsection
