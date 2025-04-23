@@ -36,19 +36,21 @@
                     @enderror
                 </div>
 
+                {{-- Actors --}}
                 <div class="mb-3">
                     <label for="inputActors" class="form-label"><strong>Actors:</strong></label>
-                    <input type="text" name="actors" id="inputActors"
-                        class="form-control @error('actors') is-invalid @enderror"
-                        placeholder="Enter actor names separated by commas" value="{{ old('actors') }}">
-                    <small class="form-text text-muted">Type actor names and separate them by commas (e.g. Leonardo
-                        Dicaprio, Tom Hanks).</small>
+                    <select name="actors[]" class="form-control @error('actors') is-invalid @enderror" id="inputActors" multiple required>
+                        @foreach($actors as $actor)
+                            <option value="{{ $actor->id }}" {{ collect(old('actors'))->contains($actor->id) ? 'selected' : '' }}>
+                                {{ $actor->name }}
+                            </option>
+                        @endforeach
+                    </select>
+                    <small class="form-text text-muted">Hold Ctrl (Windows) or Cmd (Mac) to select multiple actors.</small>
                     @error('actors')
                         <div class="form-text text-danger">{{ $message }}</div>
                     @enderror
                 </div>
-
-
 
                 <!-- Released Date -->
                 <div class="mb-3">

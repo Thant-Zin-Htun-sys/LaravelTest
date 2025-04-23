@@ -6,7 +6,7 @@
                 <h2>Add New Genres</h2>
                 <br>
             </div>
-            
+
         </div>
     </div>
     @if ($errors->any())
@@ -19,7 +19,7 @@
             </ul>
         </div>
     @endif
-    <form action="{{ route('genres.store') }}" method="POST" enctype="multipart/formdata">
+    <form action="{{ route('genres.store') }}" method="POST" enctype="multipart/form-data">
         @csrf
         <div class="col-xs-12 col-sm-12 col-md-12">
             <div class="form-group">

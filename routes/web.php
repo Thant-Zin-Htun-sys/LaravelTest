@@ -1,5 +1,7 @@
 <?php
 
+use App\Http\Controllers\ActorController;
+use App\Http\Controllers\GenreController;
 use App\Http\Controllers\ProfileController;
 use App\Http\Controllers\MovieController;
 use App\Http\Controllers\RatingController;
@@ -53,6 +55,36 @@ Route::middleware(['auth'])->group(function () {
             Route::post('/{movie}/rate', [RatingController::class, 'store'])->name('movies.rate');
         });
 
+    });
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('genres')->group(function () {
+        Route::controller(GenreController::class)->group(function () {
+            Route::get('/', 'index')->name('genres.index');
+            Route::get('/genres_search', 'search')->name('genres.search');
+            Route::get('/create', 'create')->name('genres.create');
+            Route::post('/', 'store')->name('genres.store');
+            Route::get('/{genre}', 'show')->name('genres.show');
+            Route::get('/{genre}/edit', 'edit')->name('genres.edit');
+            Route::put('/{genre}', 'update')->name('genres.update');
+            Route::delete('/{genre}', 'destroy')->name('genres.destroy');
+        });
+    });
+});
+
+Route::middleware(['auth'])->group(function () {
+    Route::prefix('actors')->group(function () {
+        Route::controller(ActorController::class)->group(function () {
+            Route::get('/', 'index')->name('actors.index');
+            Route::get('/actors_search', 'search')->name('actors.search');
+            Route::get('/create', 'create')->name('actors.create');
+            Route::post('/', 'store')->name('actors.store');
+            Route::get('/{actor}', 'show')->name('actors.show');
+            Route::get('/{actor}/edit', 'edit')->name('actors.edit');
+            Route::put('/{actor}', 'update')->name('actors.update');
+            Route::delete('/{actor}', 'destroy')->name('actors.destroy');
+        });
     });
 });
 

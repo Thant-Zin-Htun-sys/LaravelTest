@@ -20,6 +20,10 @@
 
                     <a href="{{ route('movies.create') }}" class="btn btn-outline-success btn-sm">Create Movie</a>
 
+                    <a href="{{ route('genres.index') }}" class="btn btn-outline-success btn-sm">Genre</a>
+
+                    <a href="{{ route('actors.index') }}" class="btn btn-outline-success btn-sm">Actor</a>
+
                     <form action="{{ route('logout') }}" method="POST" style="display:inline;">
                         @csrf
                         <button type="submit" class="btn btn-outline-danger btn-sm me-2">Logout</button>
